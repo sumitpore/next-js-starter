@@ -1,0 +1,6 @@
+{
+    "editor.renderIndentGuides": true,
+    "tailwindCSS.includeLanguages": {
+        "plaintext": "javascript"
+    }
+}
