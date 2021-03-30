@@ -1,29 +1,41 @@
+import PropTypes from "prop-types";
 import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import { postsActions } from "../../redux/slices/posts";
 
+const propTypes = {
+    postsReducerProps: PropTypes.shape({
+        foundPosts: PropTypes.array,
+        foundPostsError: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+    }).isRequired,
+
+    postsReducerActions: PropTypes.object.isRequired,
+};
+
 const mapStateToProps = (state) => ({
+    postsReducerProps: {
         foundPosts: state.postsReducer.foundPosts,
         foundPostsError: state.postsReducer.foundPostsError,
-    });
+    },
+});
 
 const mapDispatchToProps = (dispatch) => ({
-        actions: bindActionCreators(postsActions, dispatch),
-    });
+    postsReducerActions: bindActionCreators(postsActions, dispatch),
+});
 
 export class Posts extends Component {
     componentDidMount() {
-        this.props.actions.getPosts();
+        this.props.postsReducerActions.getPosts();
     }
 
     shouldDisplayLoadingText() {
-        if (this.props.foundPosts.length > 0) {
+        if (this.props.postsReducerProps.foundPosts.length > 0) {
             return false;
         }
 
-        if (this.props.foundPostsError) {
+        if (this.props.postsReducerProps.foundPostsError) {
             return false;
         }
 
@@ -31,7 +43,7 @@ export class Posts extends Component {
     }
 
     render() {
-        const { foundPosts, foundPostsError } = this.props;
+        const { foundPosts, foundPostsError } = this.props.postsReducerProps;
 
         if (this.shouldDisplayLoadingText()) return <div className="loading">Loading...</div>;
 
@@ -51,5 +63,7 @@ export class Posts extends Component {
         );
     }
 }
+
+Posts.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
