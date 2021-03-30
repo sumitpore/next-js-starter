@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "eslint": "eslint --color --ext .html,.js,.json,.jsx,.md,.ts,.tsx *.* pages",
+    "eslint": "eslint --color --ext .html,.js,.json,.jsx,.md,.ts,.tsx *.* pages redux",
     "eslint:fix": "npm run eslint -- --fix",
     "dev": "next dev",
     "build": "next build",

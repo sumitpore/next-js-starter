@@ -3,8 +3,8 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 const baseApiUrl = "https://jsonplaceholder.typicode.com/posts";
 
 const getPosts = createAsyncThunk("getPosts", async (page = 1, { getState }) => {
-    page = page || getState("posts")["page"];
-    let response = await fetch(`${baseApiUrl}/?_page=${page}`);
+    const pageNo = page || getState("posts").page;
+    const response = await fetch(`${baseApiUrl}/?_page=${pageNo}`);
 
     const data = await response.json();
 
@@ -22,26 +22,22 @@ export const postsSlice = createSlice({
     initialState: {
         foundPosts: [],
         foundPostsError: false,
-        page: 1,
+        nextPage: 1,
     },
 
     reducers: {},
 
     extraReducers: {
-        [getPosts.fulfilled]: (state, action) => {
-            return {
-                foundPosts: [...state.foundPosts, ...action.payload],
-                page: state.page + 1,
-                foundPostsError: false,
-            };
-        },
+        [getPosts.fulfilled]: (state, action) => ({
+            foundPosts: [...state.foundPosts, ...action.payload],
+            nextPage: state.page + 1,
+            foundPostsError: false,
+        }),
 
-        [getPosts.rejected]: (state, action) => {
-            return {
-                ...state,
-                foundPostsError: action.payload.message,
-            };
-        },
+        [getPosts.rejected]: (state, action) => ({
+            ...state,
+            foundPostsError: action.payload.message,
+        }),
     },
 });
 
