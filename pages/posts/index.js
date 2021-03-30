@@ -26,7 +26,17 @@ const mapDispatchToProps = (dispatch) => ({
 });
 
 export class Posts extends Component {
+    constructor(props) {
+        super(props);
+
+        this.onClickLoadMoreBtn = this.onClickLoadMoreBtn.bind(this);
+    }
+
     componentDidMount() {
+        this.props.postsReducerActions.getPosts();
+    }
+
+    onClickLoadMoreBtn() {
         this.props.postsReducerActions.getPosts();
     }
 
@@ -42,6 +52,10 @@ export class Posts extends Component {
         return true;
     }
 
+    shouldDisplayLoadMoreBtn() {
+        return this.props.postsReducerProps.foundPosts.length === 10;
+    }
+
     render() {
         const { foundPosts, foundPostsError } = this.props.postsReducerProps;
 
@@ -52,14 +66,24 @@ export class Posts extends Component {
         if (foundPosts.length === 0) return <div>No posts yet!</div>;
 
         return (
-            <div className="posts">
-                {foundPosts.map((post) => (
-                    <article className="mb-2" key={post.id}>
-                        <h2>{post.title}</h2>
-                        <div>{post.body}</div>
-                    </article>
-                ))}
-            </div>
+            <>
+                <div className="posts">
+                    {foundPosts.map((post) => (
+                        <article className="mb-2" key={post.id}>
+                            <h2>{post.title}</h2>
+                            <div>{post.body}</div>
+                        </article>
+                    ))}
+                </div>
+
+                <button
+                    type="button"
+                    className="bg-gray-600 hover:bg-gray-800 text-white font-bold py-2 px-4 rounded"
+                    onClick={this.onClickLoadMoreBtn}
+                >
+                    Load more <span className="hidden sm:inline">→</span>
+                </button>
+            </>
         );
     }
 }

@@ -24,6 +24,7 @@
         "react/forbid-prop-types": "off",
         "react/destructuring-assignment": "off",
         "scanjs-rules/call_connect": "off",
+        "no-constructor-bind/no-constructor-bind": "off",
         "node/no-extraneous-import": ["error", {
             "allowModules": ["redux"]
         }]

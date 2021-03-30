@@ -4,6 +4,7 @@ const baseApiUrl = "https://jsonplaceholder.typicode.com/posts";
 
 const getPosts = createAsyncThunk("getPosts", async (page = 1, { getState }) => {
     const pageNo = page || getState("posts").page;
+    console.log(`Page ${pageNo}`);
     const response = await fetch(`${baseApiUrl}/?_page=${pageNo}`);
 
     const data = await response.json();
