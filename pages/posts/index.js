@@ -8,7 +8,7 @@ import { postsActions } from "../../redux/slices/posts";
 const propTypes = {
     postsReducerProps: PropTypes.shape({
         foundPosts: PropTypes.array,
-        foundPostsError: PropTypes.oneOfType([PropTypes.string, PropTypes.bool]),
+        foundPostsError: PropTypes.oneOfType([PropTypes.string, PropTypes.bool, PropTypes.number]),
     }).isRequired,
 
     postsReducerActions: PropTypes.object.isRequired,
