@@ -7,6 +7,7 @@
     "extends": [
         "auto"
     ],
+    "parser": "babel-eslint",
     "parserOptions": {
         "ecmaFeatures": {
             "jsx": true
@@ -25,6 +26,8 @@
         "react/destructuring-assignment": "off",
         "scanjs-rules/call_connect": "off",
         "no-constructor-bind/no-constructor-bind": "off",
+        "no-param-reassign": "off",
+        "react/state-in-constructor": "off",
         "node/no-extraneous-import": ["error", {
             "allowModules": ["redux"]
         }]

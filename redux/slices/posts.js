@@ -19,19 +19,26 @@ const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithVa
 });
 
 export const postsSlice = createSlice({
-    name: "posts",
+    name: "posts", // used by reducer to define types. types are prepended with this text.
 
     initialState: {
         foundPosts: [],
         foundPostsError: false,
         nextPage: 1,
+        postDetails: {},
     },
 
-    reducers: {},
+    reducers: {
+        getPost: (state, action) => {
+            const { postId, pageNo } = action.payload;
+            const { foundPosts } = state;
+            state.postDetails = foundPosts[pageNo].find((post) => post.id === postId);
+        },
+    },
 
     extraReducers: {
         [getPosts.fulfilled]: (state, action) => ({
-            foundPosts: [...state.foundPosts, ...action.payload],
+            foundPosts: [...state.foundPosts, action.payload],
             nextPage: state.nextPage + 1,
             foundPostsError: false,
         }),
