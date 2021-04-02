@@ -1,11 +1,13 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-const baseApiUrl = "https://jsonplaceholder.typicode.com/posts";
+import config from "../../../app.config";
+
+const postApi = `${config.apiBase}/posts`;
 
 const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithValue }) => {
     const { nextPage: pageNo } = getState().postsReducer;
 
-    const response = await fetch(`${baseApiUrl}/?_page=${pageNo}`);
+    const response = await fetch(`${postApi}/?_page=${pageNo}`);
 
     const data = await response.json();
 
