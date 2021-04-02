@@ -5,8 +5,8 @@ import { Component } from "react";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
-import Modal from "../../components/modal";
-import { postsActions } from "../../redux/slices/posts";
+import Modal from "../../../components/modal";
+import { postsActions } from "../../../redux/slices/examples/posts";
 
 const propTypes = {
     postsReducerProps: PropTypes.shape({
