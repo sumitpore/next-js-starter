@@ -27,7 +27,7 @@ export default function Home() {
                 <div className="flex flex-wrap justify-center items-center mt-12 box-border">
                     <a
                         target="_blank"
-                        href="/posts"
+                        href="/examples/posts"
                         className="w-1/2 p-6 m-4 text-left no-underline border border-gray-300 border-solid cursor-pointer box-border hover:border-blue-600 hover:text-blue-600 focus:border-blue-600 focus:text-blue-600 rounded-lg"
                     >
                         <h3 className="mx-0 mt-0 mb-4 text-2xl font-bold box-border">Posts →</h3>
