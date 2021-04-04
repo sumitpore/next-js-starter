@@ -3,7 +3,7 @@ import "../styles/globals.css";
 import PropTypes from "prop-types";
 import { Provider } from "react-redux";
 
-import store from "../redux/store";
+import useStore from "../redux/store";
 
 const propTypes = {
     Component: PropTypes.elementType.isRequired,
@@ -11,6 +11,7 @@ const propTypes = {
 };
 
 function App({ Component, pageProps }) {
+    const store = useStore(pageProps.initialReduxState);
     return (
         <Provider store={store}>
             <Component {...pageProps} />

@@ -6,7 +6,8 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import Modal from "../../../components/modal";
-import { postsActions } from "../../../redux/slices/examples/posts";
+import { POST_API } from "../../../constants/apis";
+import { initialState, postsActions } from "../../../redux/slices/examples/posts";
 
 const propTypes = {
     postsReducerProps: PropTypes.shape({
@@ -40,9 +41,12 @@ export class Posts extends Component {
         this.onPostDetailsModalCloseBtnClick = this.onPostDetailsModalCloseBtnClick.bind(this);
     }
 
-    componentDidMount() {
-        this.props.postsReducerActions.getPosts();
-    }
+    // `componentDidMount` is not needed because we are declaring `getStaticProps`
+    // function in this file which will prepare the first page during build process.
+    // If you remove getStaticProps, then uncomment below line.
+    // componentDidMount() {
+    //     this.props.postsReducerActions.getPosts();
+    // }
 
     onLoadMoreBtnClick() {
         this.props.postsReducerActions.getPosts();
@@ -154,3 +158,31 @@ export class Posts extends Component {
 Posts.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
+
+// This method gets executed at build time.
+export async function getStaticProps() {
+    let postsReducerPros = initialState;
+    const response = await fetch(`${POST_API}/?_page=1`);
+
+    const data = await response.json();
+
+    if (!response.ok) {
+        return postsReducerPros;
+    }
+
+    postsReducerPros = {
+        ...postsReducerPros,
+        foundPosts: [data],
+        nextPage: 2,
+    };
+
+    // We will fetch the results of first page during build process and return
+    // that state. This improves first loading time significantly.
+    return {
+        props: {
+            initialReduxState: {
+                postsReducer: postsReducerPros,
+            },
+        },
+    };
+}

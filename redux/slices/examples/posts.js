@@ -1,13 +1,11 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import config from "../../../app.config";
-
-const postApi = `${config.apiBase}/posts`;
+import { POST_API } from "../../../constants/apis";
 
 const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithValue }) => {
     const { nextPage: pageNo } = getState().postsReducer;
 
-    const response = await fetch(`${postApi}/?_page=${pageNo}`);
+    const response = await fetch(`${POST_API}/?_page=${pageNo}`);
 
     const data = await response.json();
 
@@ -20,15 +18,17 @@ const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithVa
     return data;
 });
 
-export const postsSlice = createSlice({
+const defaultState = {
+    foundPosts: [],
+    foundPostsError: false,
+    nextPage: 1,
+    postDetails: {},
+};
+
+const postsSlice = createSlice({
     name: "posts", // used by reducer to define types. types are prepended with this text.
 
-    initialState: {
-        foundPosts: [],
-        foundPostsError: false,
-        nextPage: 1,
-        postDetails: {},
-    },
+    initialState: defaultState,
 
     reducers: {
         getPost: (state, action) => {
@@ -54,3 +54,4 @@ export const postsSlice = createSlice({
 
 export const postsReducer = postsSlice.reducer;
 export const postsActions = { ...postsSlice.actions, getPosts };
+export const initialState = defaultState;

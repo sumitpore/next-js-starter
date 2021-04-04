@@ -28,6 +28,7 @@
         "no-constructor-bind/no-constructor-bind": "off",
         "no-param-reassign": "off",
         "react/state-in-constructor": "off",
+        "no-underscore-dangle":"off",
         "node/no-extraneous-import": ["error", {
             "allowModules": ["redux"]
         }]

@@ -1,4 +1,4 @@
-This is a starter template for ReactJS + NextJS + Tailwind + PropTypes + Reducer + ESLint + Prettier.
+This is a starter template for ReactJS + NextJS + Tailwind + PropTypes + Redux (Using Redux Toolkit)  + ESLint + Prettier.
 
 JIT is enabled for TailwindCSS.
 
