@@ -1,5 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 /* eslint-disable react/no-array-index-key */
+import Image from "next/image";
 import PropTypes from "prop-types";
 import { Component } from "react";
 import { connect } from "react-redux";
@@ -43,7 +44,11 @@ export class Posts extends Component {
 
     // `componentDidMount` is not needed because we are declaring `getStaticProps`
     // function in this file which will prepare the first page during build process.
-    // If you remove getStaticProps, then uncomment below line.
+    // If you remove getStaticProps, then uncomment below line. There is no harm
+    // in uncommenting this method. It will automatically make request to second
+    // page when component is mounted. So first page is returned statically by
+    // next directly and the api request needed for second page will be made
+    // when component gets mounted.
     // componentDidMount() {
     //     this.props.postsReducerActions.getPosts();
     // }
@@ -90,10 +95,12 @@ export class Posts extends Component {
                 onKeyUp={(e) => (e.key === "Enter" ? this.onSinglePostClick(post.id, pageNo) : "")}
             >
                 <div className="h-full border-2 border-gray-200 border-opacity-60 rounded-lg overflow-hidden">
-                    <img
+                    <Image
                         className="lg:h-48 md:h-36 w-full object-cover object-center"
                         src={`https://picsum.photos/id/${post.id}/720/400`}
                         alt={post.title}
+                        width={720}
+                        height={440}
                     />
 
                     <article className="p-6" key={post.id}>
@@ -159,29 +166,31 @@ Posts.propTypes = propTypes;
 
 export default connect(mapStateToProps, mapDispatchToProps)(Posts);
 
-// This method gets executed at build time.
+// This method gets executed at build time. (i.e during npm run build)
 export async function getStaticProps() {
-    let postsReducerPros = initialState;
+    // We will fetch the results of first page during build process and return
+    // that state. This improves first loading time significantly.
+    // This approach is good when the API response is going to always going
+    // to be same because this approach is kind of caching the first page
+    // during build time.
+
+    let postsReducerProps = initialState;
     const response = await fetch(`${POST_API}/?_page=1`);
 
     const data = await response.json();
 
-    if (!response.ok) {
-        return postsReducerPros;
+    if (response.ok) {
+        postsReducerProps = {
+            ...postsReducerProps,
+            foundPosts: [data],
+            nextPage: 2,
+        };
     }
 
-    postsReducerPros = {
-        ...postsReducerPros,
-        foundPosts: [data],
-        nextPage: 2,
-    };
-
-    // We will fetch the results of first page during build process and return
-    // that state. This improves first loading time significantly.
     return {
         props: {
             initialReduxState: {
-                postsReducer: postsReducerPros,
+                postsReducer: postsReducerProps,
             },
         },
     };

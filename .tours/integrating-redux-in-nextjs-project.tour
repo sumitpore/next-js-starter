@@ -1,0 +1,182 @@
+{
+  "$schema": "https://aka.ms/codetour-schema",
+  "title": "Integrating Redux in NextJs Project",
+  "steps": [
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "It starts with creating a Slice Object. We are inside a `redux/slices/examples/posts.js`.\n\nActions can be created inside `reducers` key and `extraReducers` key.\n\nHere is the detailed documentation for [createSlice](https://redux-toolkit.js.org/api/createSlice).",
+      "line": 28
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "Define name for the slice",
+      "line": 29
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "We've created a separate object `defaultState` in this file. We'll be assigning that object to `initialState` key.",
+      "line": 31
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "We are creating two actions   \n\nA. getPost - Accepts `id` as an input parameter. It searches for the post with passed id in `foundPosts` state. If the post is found, `state.postDetails` is set to that post object.\n\n\nB. getPosts - Makes an API request to fetch posts for the page number available in `state.nextPage`. When results are found, they are added in `state.foundPosts`. `state.nextPage` is updated to the next page number.\n\nActions allow to define a new state based on the action.\n\n`createSlice` automatically use `Immer` internally to let us write simpler immutable update logic using \"mutating\" syntax. This helps simplify most reducer implementations. So it does not mutate existing state but instead returns a new state.",
+      "line": 34
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "`getPosts` action need to make an API call. Therefore, we've to make it an async thunk. Detailed [documentation of `createAsyncThunk` can be found here.](https://redux-toolkit.js.org/api/createAsyncThunk).\n\nFirst parameter is type. We've passed type as `getPosts`. For this type, it will generate these action types\n- pending: `getPosts/pending`\n- fullfilled: `getPosts/fulfilled`\n- rejected: `getPosts/rejected`\n\nSecond parameter is an async callback which accepts two arguments \n1. If you want to pass any information to this action when calling it, then that information will be present in the first argument.\n2. Second argument is ThunkAPI. In this example, we are extracting `getState` and `rejectWithValue` from ThunkAPI.",
+      "line": 5
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "States stored by Redux can be feched from `getState()`. To get states of a particular reducer, we can append the reducer name after getState followed by Dot(`.`), \n\nIn this file, we are exporting the variable named `postsReducer` at the bottom of the file and the same name we use in `store.js` too. Therefore, Redux will store the states of this reducer by `postsReducer` key.",
+      "line": 6
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "When callback passed to createAsyncThunk rejects the promise with `rejectWithValue`, then redux will call this action. The value passed in rejectWithValue is available as a payload.",
+      "line": 42,
+      "selection": {
+        "start": {
+          "line": 16,
+          "character": 16
+        },
+        "end": {
+          "line": 16,
+          "character": 31
+        }
+      }
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "When the promise of `createAsyncThunk` is fulfilled, then the data returned from it is accessible in this action using `action.payload`.",
+      "line": 46
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "Export Reducer",
+      "line": 54
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "Export Actions. Note, we are adding getPosts separately.",
+      "line": 55
+    },
+    {
+      "file": "redux/slices/examples/posts.js",
+      "description": "Export default state as initial state",
+      "line": 56
+    },
+    {
+      "file": "redux/store.js",
+      "description": "This is where we can add reducers in `store.js` exported from Slice files.",
+      "line": 10
+    },
+    {
+      "file": "redux/store.js",
+      "description": "We are exporting `useStore` function from store.js file.",
+      "line": 41
+    },
+    {
+      "file": "pages/_app.js",
+      "description": "Import `useStore` exposed by store.js in `pages/_app.js`",
+      "line": 6
+    },
+    {
+      "file": "pages/_app.js",
+      "description": "Pass the store to the App.",
+      "line": 14,
+      "selection": {
+        "start": {
+          "line": 14,
+          "character": 1
+        },
+        "end": {
+          "line": 19,
+          "character": 7
+        }
+      }
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Import connect from react-redux",
+      "line": 6
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Import bindActionCreators from redux",
+      "line": 7
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Import initialState and actions from Slice file.",
+      "line": 11
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Map Redux state to Component Props",
+      "line": 23
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "e.g. This redux state can be accessed in component like `this.props.postsReducerProps.foundPosts`",
+      "line": 25
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Map Reducer actions to component props.",
+      "line": 31
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "e.g. `getPost` and `getPosts` action of reducer can be accessed in component like this `this.props.postsReducerActions.getPost()` and `this.props.postsReducerActions.getPosts()` respectively.",
+      "line": 32,
+      "selection": {
+        "start": {
+          "line": 32,
+          "character": 5
+        },
+        "end": {
+          "line": 32,
+          "character": 24
+        }
+      }
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Connect Reducer to the Component using `connect` helper.",
+      "line": 163
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "This is optional. Using this nextjs's function we fetch the results of first page during build and pass them to the component.",
+      "line": 166
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Initialize a variable using initialState imported from Slice file.",
+      "line": 173
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "When data is obtained from API request, merge that data in initial state",
+      "line": 179
+    },
+    {
+      "file": "pages/examples/posts/index.js",
+      "description": "Return the data with `props.initialReduxState.[REDUCERNAME]`",
+      "line": 189,
+      "selection": {
+        "start": {
+          "line": 188,
+          "character": 13
+        },
+        "end": {
+          "line": 188,
+          "character": 30
+        }
+      }
+    }
+  ],
+  "ref": "main"
+}

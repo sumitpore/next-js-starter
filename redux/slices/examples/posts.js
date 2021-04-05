@@ -3,7 +3,7 @@ import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import { POST_API } from "../../../constants/apis";
 
 const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithValue }) => {
-    const { nextPage: pageNo } = getState().postsReducer;
+    const pageNo = getState().postsReducer.nextPage;
 
     const response = await fetch(`${POST_API}/?_page=${pageNo}`);
 
@@ -39,15 +39,14 @@ const postsSlice = createSlice({
     },
 
     extraReducers: {
+        [getPosts.rejected]: (state, action) => {
+            state.foundPostsError = action.payload;
+        },
+
         [getPosts.fulfilled]: (state, action) => ({
             foundPosts: [...state.foundPosts, action.payload],
             nextPage: state.nextPage + 1,
             foundPostsError: false,
-        }),
-
-        [getPosts.rejected]: (state, action) => ({
-            ...state,
-            foundPostsError: action.payload,
         }),
     },
 });
