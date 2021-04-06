@@ -7,6 +7,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import Modal from "../../../components/modal";
+import { API_ERROR_OCCURRED } from "../../../constants/errors";
 import fetchPosts from "../../../lib/fetchPosts";
 import { initialState, postsActions } from "../../../redux/slices/examples/posts";
 
@@ -176,9 +177,9 @@ export async function getStaticProps() {
 
     let postsReducerProps = initialState;
 
-    const data = await fetchPosts({ pageNo: 1, failureReturnCallback: () => "ERROR_OCCURRED" });
+    const data = await fetchPosts({ pageNo: 1, failureReturnCallback: () => API_ERROR_OCCURRED });
 
-    if (data !== "ERROR_OCCURRED") {
+    if (data !== API_ERROR_OCCURRED) {
         postsReducerProps = {
             ...postsReducerProps,
             foundPosts: [data],
