@@ -7,7 +7,7 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 
 import Modal from "../../../components/modal";
-import { POST_API } from "../../../constants/apis";
+import fetchPosts from "../../../lib/fetchPosts";
 import { initialState, postsActions } from "../../../redux/slices/examples/posts";
 
 const propTypes = {
@@ -175,11 +175,10 @@ export async function getStaticProps() {
     // during build time.
 
     let postsReducerProps = initialState;
-    const response = await fetch(`${POST_API}/?_page=1`);
 
-    const data = await response.json();
+    const data = await fetchPosts({ pageNo: 1, failureReturnCallback: () => "ERROR_OCCURRED" });
 
-    if (response.ok) {
+    if (data !== "ERROR_OCCURRED") {
         postsReducerProps = {
             ...postsReducerProps,
             foundPosts: [data],

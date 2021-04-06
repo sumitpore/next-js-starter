@@ -1,21 +1,12 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 
-import { POST_API } from "../../../constants/apis";
+import fetchPosts from "../../../lib/fetchPosts";
 
 const getPosts = createAsyncThunk("getPosts", async (_, { getState, rejectWithValue }) => {
     const pageNo = getState().postsReducer.nextPage;
 
-    const response = await fetch(`${POST_API}/?_page=${pageNo}`);
-
-    const data = await response.json();
-
-    if (!response.ok) {
-        // get error message from body or default to response statusText
-        const error = (data && data.message) || response.statusText || response.status;
-
-        return rejectWithValue(error);
-    }
-    return data;
+    // eslint-disable-next-line no-return-await
+    return await fetchPosts({ pageNo, failureReturnCallback: (error) => rejectWithValue(error) });
 });
 
 const defaultState = {
