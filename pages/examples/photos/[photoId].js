@@ -1,6 +1,6 @@
 /* eslint-disable eslint-comments/disable-enable-pair */
 import PropTypes from "prop-types";
-import { Component } from "react";
+import { PureComponent } from "react";
 
 import { API_ERROR_OCCURRED } from "../../../constants/errors";
 import fetchPhoto from "../../../lib/fetchPhoto";
@@ -11,7 +11,7 @@ const propTypes = {
     photo: PropTypes.object.isRequired,
 };
 
-export class Photo extends Component {
+export class Photo extends PureComponent {
     render() {
         if (this.props.isError) return API_ERROR_OCCURRED;
 
